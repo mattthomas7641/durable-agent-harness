@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "longrun"
+version = "0.1.0"
+description = "A harness that lets a coding agent work for hours without being trusted: resume, fan out, stay off prod."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Matthew Thomas" }]
+keywords = ["agents", "llm", "sandbox", "mcp", "claude"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+]
+dependencies = ["anthropic>=1.0"]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.6", "mypy>=1.10", "coverage>=7.5"]
+
+[project.scripts]
+longrun = "longrun.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/longrun"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "S"]
+ignore = [
+    "S603",  # subprocess without shell: that's the point of the sandbox
+    "S101",  # assert
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src/longrun"]
+
+[[tool.mypy.overrides]]
+module = ["anthropic", "anthropic.*"]
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["longrun"]
+branch = true
