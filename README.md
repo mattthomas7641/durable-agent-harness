@@ -1,4 +1,6 @@
-# longrun
+# Durable Agent Harness
+
+> CLI and Python package: `longrun`
 
 **A harness that lets a coding agent work for hours without being trusted.**
 Kill it mid-run and it resumes from the last checkpoint. Fan work out to parallel subagents. Keep it
